@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import CheckButton from './CheckButton.js';
 
 class Image extends Component {
-    constructor (props) {
+    constructor(props) {
         super(props);
 
         this.state = {
@@ -11,7 +11,7 @@ class Image extends Component {
         };
     }
 
-    tagStyle () {
+    tagStyle() {
         if (this.props.tagStyle)
             return this.props.tagStyle;
         return {
@@ -29,11 +29,11 @@ class Image extends Component {
         };
     }
 
-    tileViewportStyle () {
+    tileViewportStyle() {
         if (this.props.tileViewportStyle)
             return this.props.tileViewportStyle.call(this);
         var nanoBase64Backgorund = {}
-        if(this.props.item.nano) {
+        if (this.props.item.nano) {
             nanoBase64Backgorund = {
                 background: `url(${this.props.item.nano})`,
                 backgroundSize: 'cover',
@@ -42,8 +42,8 @@ class Image extends Component {
         }
         if (this.props.item.isSelected)
             return Object.assign({
-                width: this.props.item.vwidth -32,
-                height: this.props.height -32,
+                width: this.props.item.vwidth - 32,
+                height: this.props.height - 32,
                 margin: 16,
                 overflow: "hidden",
             }, nanoBase64Backgorund);
@@ -54,7 +54,7 @@ class Image extends Component {
         }, nanoBase64Backgorund);
     }
 
-    thumbnailStyle () {
+    thumbnailStyle() {
         if (this.props.thumbnailStyle)
             return this.props.thumbnailStyle.call(this);
 
@@ -82,19 +82,19 @@ class Image extends Component {
                 rotationTransformValue = "rotate(90deg) rotateY(180deg)";
                 break;
         }
-        if (this.props.item.isSelected){
+        if (this.props.item.isSelected) {
             var ratio = (this.props.item.scaletwidth / this.props.height);
             var height = 0;
             var width = 0;
             var viewportHeight = (this.props.height - 32);
-            var viewportWidth = (this.props.item.vwidth -32);
+            var viewportWidth = (this.props.item.vwidth - 32);
 
-            if(this.props.item.scaletwidth > this.props.height){
-                width = this.props.item.scaletwidth -32;
+            if (this.props.item.scaletwidth > this.props.height) {
+                width = this.props.item.scaletwidth - 32;
                 height = Math.floor(width / ratio);
             }
             else {
-                height = this.props.height -32;
+                height = this.props.height - 32;
                 width = Math.floor(height * ratio);
             }
 
@@ -119,51 +119,54 @@ class Image extends Component {
         };
     }
 
-    renderCheckButton () {
+    renderCheckButton() {
         return (
-                <CheckButton key="Select"
-            index={this.props.index}
-            color={"rgba(255, 255, 100, 0.5)"}
-            selectedColor={"#4285f4"}
-            hoverColor={"rgba(255, 255, 255, 1)"}
-            isSelected={this.props.item.isSelected}
-            isSelectable={this.props.isSelectable}
-            onClick={this.props.isSelectable ?
-                     this.props.onSelectImage : null}
-            parentHover={this.state.hover}/>
+            <CheckButton key="Select"
+                index={this.props.index}
+                color={"rgba(0, 0, 0, 0.3)"}
+                selectedColor={"#4285f4"}
+                hoverColor={"rgba(0, 0, 0, 0.6)"}
+                isSelected={this.props.item.isSelected}
+                isSelectable={this.props.isSelectable}
+                onClick={this.props.isSelectable ?
+                    this.props.onSelectImage : null}
+                parentHover={this.state.hover} />
         );
     }
 
-    render () {
+    render() {
         var alt = this.props.item.alt ? this.props.item.alt : "";
-        var tags = (typeof this.props.item.tags === 'undefined') ? <noscript/> :
-                this.props.item.tags.map((tag) => {
-                    const key = tag.key || (typeof tag.value === 'string' ? tag.value : null) || tag.title;
-                    return <div title={tag.title}
-                    key={"tag-"+key}
-                    style={{display: "inline-block",
-                            cursor: 'pointer',
-                            pointerEvents: 'visible',
-                            margin: "2px"}}>
-                        <span style={this.tagStyle()}>{tag.value}</span>
-                        </div>;
-                });
+        var tags = (typeof this.props.item.tags === 'undefined') ? <noscript /> :
+            this.props.item.tags.map((tag) => {
+                const key = tag.key || (typeof tag.value === 'string' ? tag.value : null) || tag.title;
+                return <div title={tag.title}
+                    key={"tag-" + key}
+                    style={{
+                        display: "inline-block",
+                        cursor: 'pointer',
+                        pointerEvents: 'visible',
+                        margin: "2px"
+                    }}>
+                    <span style={this.tagStyle()}>{tag.value}</span>
+                </div>;
+            });
 
         var customOverlay = (typeof this.props.item.customOverlay === 'undefined')
-                ? <noscript/> :
+            ? <noscript /> :
             <div className="ReactGridGallery_custom-overlay"
-        key={"custom-overlay-"+this.props.index}
-        style={{
-            pointerEvents: "none",
-            opacity: this.state.hover ? 1 : 0,
-            position: "absolute",
-            height: "100%",
-            width: "100%"}}>
-            {this.props.item.customOverlay}
-        </div>;
+                key={"custom-overlay-" + this.props.index}
+                style={{
+                    pointerEvents: "none",
+                    opacity: this.state.hover ? 1 : 0,
+                    position: "absolute",
+                    height: "100%",
+                    width: "100%"
+                }}>
+                {this.props.item.customOverlay}
+            </div>;
 
         var thumbnailProps = {
-            key: "img-"+this.props.index,
+            key: "img-" + this.props.index,
             src: this.props.item.thumbnail,
             alt: alt,
             title: typeof this.props.item.caption === 'string' ? this.props.item.caption : null,
@@ -173,81 +176,85 @@ class Image extends Component {
         var ThumbnailImageComponent = this.props.thumbnailImageComponent;
 
         return (
-                <div className="ReactGridGallery_tile"
-            key={"tile-"+this.props.index}
-            onMouseEnter={(e) => this.setState({hover: true})}
-            onMouseLeave={(e) => this.setState({hover: false})}
-            style={{
-                margin: this.props.margin,
-                WebkitUserSelect: "none",
-                position: "relative",
-                float: "left",
-                background: "#eee",
-                padding: "0px"}}>
+            <div className="ReactGridGallery_tile"
+                key={"tile-" + this.props.index}
+                onMouseEnter={(e) => this.setState({ hover: true })}
+                onMouseLeave={(e) => this.setState({ hover: false })}
+                style={{
+                    margin: this.props.margin,
+                    WebkitUserSelect: "none",
+                    position: "relative",
+                    float: "left",
+                    background: "#eee",
+                    padding: "0px"
+                }}>
 
                 <div className="ReactGridGallery_tile-icon-bar"
-            key={"tile-icon-bar-"+this.props.index}
-            style={{
-                pointerEvents: "none",
-                opacity: 1,
-                position: "absolute",
-                height: "36px",
-                width: "100%"}}>
-                {/* {this.renderCheckButton()} */}
+                    key={"tile-icon-bar-" + this.props.index}
+                    style={{
+                        pointerEvents: "none",
+                        opacity: 1,
+                        position: "absolute",
+                        height: "36px",
+                        width: "100%"
+                    }}>
+                    {this.renderCheckButton()}
                 </div>
 
+
                 <div className="ReactGridGallery_tile-bottom-bar"
-            key={"tile-bottom-bar-"+this.props.index}
-            style={{
-                padding: "2px",
-                pointerEvents: "none",
-                position: "absolute",
-                minHeight: "0px",
-                maxHeight: "160px",
-                width: "100%",
-                bottom: "0px",
-                overflow: "hidden"
-            }}>
-                {tags}
-            </div>
+                    key={"tile-bottom-bar-" + this.props.index}
+                    style={{
+                        padding: "2px",
+                        pointerEvents: "none",
+                        position: "absolute",
+                        minHeight: "0px",
+                        maxHeight: "160px",
+                        width: "100%",
+                        bottom: "0px",
+                        overflow: "hidden"
+                    }}>
+                    {tags}
+                </div>
 
                 {customOverlay}
 
                 <div className="ReactGridGallery_tile-overlay"
-            key={"tile-overlay-"+this.props.index}
-            style={{
-                pointerEvents: "none",
-                opacity: 1,
-                position: "absolute",
-                height: "100%",
-                width: "100%",
-                background: (this.state.hover
-                             && !this.props.item.isSelected
-                             && this.props.isSelectable) ?
-                    'linear-gradient(to bottom,rgba(0,0,0,0.26),transparent 56px,transparent)' : 'none'}}>
+                    key={"tile-overlay-" + this.props.index}
+                    style={{
+                        pointerEvents: "none",
+                        opacity: 1,
+                        position: "absolute",
+                        height: "100%",
+                        width: "100%",
+                        background: (this.state.hover
+                            && !this.props.item.isSelected
+                            && this.props.isSelectable) ?
+                            'linear-gradient(to bottom,rgba(0,0,0,0.26),transparent 56px,transparent)' : 'none'
+                    }}>
                 </div>
 
                 <div className="ReactGridGallery_tile-viewport"
-            style={this.tileViewportStyle()}
-            key={"tile-viewport-"+this.props.index}
-            onClick={this.props.onClick ?
-                     (e) => this.props.onClick.call(this, this.props.index, e) : null}>
-                {ThumbnailImageComponent ?
-                    <ThumbnailImageComponent {...this.props} imageProps={thumbnailProps} /> :
-                    <img {...thumbnailProps} />}
+                    style={this.tileViewportStyle()}
+                    key={"tile-viewport-" + this.props.index}
+                    onClick={this.props.onClick ?
+                        (e) => this.props.onClick.call(this, this.props.index, e) : null}>
+                    {ThumbnailImageComponent ?
+                        <ThumbnailImageComponent {...this.props} imageProps={thumbnailProps} /> :
+                        <img {...thumbnailProps} />}
                 </div>
                 {this.props.item.thumbnailCaption && (
-                        <div className="ReactGridGallery_tile-description"
-                    style={{
-                        background: "white",
-                        height: "100%",
-                        width: "100%",
-                        margin: 0,
-                        userSelect: "text",
-                        WebkitUserSelect: "text",
-                        MozUserSelect: "text",
-                        overflow: "hidden"
-                    }}>
+                    <div className="ReactGridGallery_tile-description"
+                        style={{
+                            background: "white",
+                            height: "100%",
+                            width: "100%",
+                            margin: 0,
+                            userSelect: "text",
+                            WebkitUserSelect: "text",
+                            MozUserSelect: "text",
+                            overflow: "hidden"
+                        }}>
                         {this.props.item.thumbnailCaption}
                     </div>
                 )}
