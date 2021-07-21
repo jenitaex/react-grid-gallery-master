@@ -176,7 +176,10 @@ class Image extends Component {
         var ThumbnailImageComponent = this.props.thumbnailImageComponent;
 
         return (
-            <div className="ReactGridGallery_tile"
+            <div 
+                draggable={true}
+                onDragStart={(e) => this.props.item.onDragStart(e, this.props.item.id)}
+                className="ReactGridGallery_tile"
                 key={"tile-" + this.props.index}
                 onMouseEnter={(e) => this.setState({ hover: true })}
                 onMouseLeave={(e) => this.setState({ hover: false })}
